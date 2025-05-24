@@ -1,0 +1,81 @@
+tiktube:
+  # 是否配置代理访问，如果前置配置了 nginx 等代理服务器，则需要将此配置修改为 true，不然为 false，防止用户 ip 伪造
+  # 默认 false
+  is-the-proxy-configured: false
+  # IP地址数据库
+  ip-db-path: C:\\data\\code\\Spring\\PornTube\\TikTube\\ip2region.xdb
+  # 是否启用 redis 缓存，默认 false，开启后需在配置文件中增加 redis 配置项目
+
+server:
+  port: 8080
+  http2:
+    enabled: true
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+spring:
+  web:
+    resources:
+      chain:
+        # 开启静态资源缓存
+        cache: true
+        enabled: true
+        compressed: true
+      cache:
+        # 设置缓存时间
+        period: 2592000
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tiktube?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 1234
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100000000MB
+      max-request-size: 1024000000MB
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      # 连接超时时间
+      timeout: 10000
+      lettuce:
+        pool:
+          # 连接池最大连接数
+          max-active: 8
+          # 连接池最大阻塞等待时间（使用负值表示没有限制）
+          max-wait: -1
+          # 连接池中的最大空闲连接
+          max-idle: 8
+          # 连接池中的最小空闲连接
+          min-idle: 0
+  messages:
+    encoding: UTF-8
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+
+logging:
+  level:
+    com:
+      buguagaoshu:
+        tiktube: debug
+  file:
+    name: log/spring.log
+  logback:
+    rollingpolicy:
+      max-history: 7
+  charset:
+    console: UTF-8
+    file: UTF-8

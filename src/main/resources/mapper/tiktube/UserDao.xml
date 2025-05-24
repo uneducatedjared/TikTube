@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.buguagaoshu.tiktube.dao.UserDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.buguagaoshu.tiktube.entity.UserEntity" id="userMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="mail" column="mail"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="createTime" column="create_time"/>
+        <result property="submitCount" column="submit_count"/>
+        <result property="followCount" column="follow_count"/>
+        <result property="fansCount" column="fans_count"/>
+        <result property="avatarUrl" column="avatar_url"/>
+        <result property="topImgUrl" column="top_img_url"/>
+        <result property="introduction" column="introduction"/>
+        <result property="lastPublishTime" column="last_publish_time"/>
+        <result property="otp" column="otp"/>
+        <result property="otp" column="otp_secret" />
+        <result property="otpRecovery" column="otp_recovery"/>
+        <result property="status" column="status"/>
+        <result property="blockEndTime" column="block_end_time"/>
+    </resultMap>
+    <update id="addSubmitCount">
+         update user set submit_count = submit_count + #{count} where id = #{userId}
+    </update>
+    <update id="addCount">
+        update user set ${col} = ${col} + #{count} where id = #{userId}
+    </update>
+    <update id="updateLastPublishTime">
+        update user set last_publish_time = ${time} where id = #{userId}
+    </update>
+</mapper>
