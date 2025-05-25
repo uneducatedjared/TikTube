@@ -10,10 +10,7 @@ import java.time.LocalDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * @create 2025-05-11
- */
+
 @Repository("countLimitRepositoryImpl")
 public class CountLimitRepositoryImpl implements CountLimitRepository {
 

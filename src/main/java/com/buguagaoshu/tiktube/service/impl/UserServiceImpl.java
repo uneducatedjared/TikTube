@@ -103,7 +103,6 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
                 new Query<UserEntity>().getPage(params),
                 new QueryWrapper<UserEntity>()
         );
-
         return new PageUtils(page);
     }
 
@@ -241,42 +240,71 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
                              LoginDetails loginDetails,
                              HttpServletResponse response,
                              HttpServletRequest request) {
+        // 1. 创建返回对象并复制属性
         User user = new User();
-        BeanUtils.copyProperties(userEntity, user);
-        long time = System.currentTimeMillis();
-        long expirationTime = EXPIRATION_TIME;
-        int cookExpirationTime = -1;
-        String jwt = "";
+        BeanUtils.copyProperties(userEntity, user);  // 将实体类属性复制到VO对象
+        
+        // 2. 初始化时间相关变量
+        long time = System.currentTimeMillis();  // 获取当前时间戳
+        long expirationTime = EXPIRATION_TIME;   // 默认过期时间（2小时）
+        int cookExpirationTime = -1;             // Cookie过期时间
+        String jwt = "";                         // JWT令牌
+        
+        // 3. 获取用户角色信息
         UserRoleEntity userRoleEntity = userRoleService.findByUserId(userEntity.getId());
+        
+        // 4. 检查VIP状态
         if (userRoleEntity.getRole().equals(RoleTypeEnum.VIP.getRole())) {
+            // 如果VIP已过期，降级为普通用户
             if (userRoleEntity.getVipStopTime() < System.currentTimeMillis()) {
                 userRoleEntity.setRole(RoleTypeEnum.USER.getRole());
                 userRoleService.updateById(userRoleEntity);
             }
         }
 
+        // 5. 设置用户角色
         user.setUserRoleEntity(userRoleEntity);
+        
+        // 6. 处理"记住我"功能
         if (loginDetails.getRememberMe() != null && loginDetails.getRememberMe()) {
+            // 如果选择记住我，设置更长的过期时间（15天）
             expirationTime = COOKIE_EXPIRATION_TIME * 1000 + time;
             cookExpirationTime = COOKIE_EXPIRATION_TIME;
         } else {
+            // 否则使用默认过期时间（2小时）
             expirationTime += time;
         }
 
+        // 7. 设置过期时间并清除密码
         user.setExpireTime(expirationTime);
-        user.setPassword("");
-        jwt = JwtUtil.createJwt(userEntity.getMail(), String.valueOf(userEntity.getId()), userRoleEntity.getRole(), expirationTime, userRoleEntity.getVipStopTime());
-        // 传递 token
+        user.setPassword("");  // 清除密码，不返回给前端
+        
+        // 8. 创建JWT令牌
+        jwt = JwtUtil.createJwt(
+            userEntity.getMail(),           // 用户邮箱
+            String.valueOf(userEntity.getId()), // 用户ID
+            userRoleEntity.getRole(),       // 用户角色
+            expirationTime,                 // 过期时间
+            userRoleEntity.getVipStopTime() // VIP过期时间
+        );
+        
+        // 9. 设置Cookie
         Cookie cookie = new Cookie(WebConstant.COOKIE_TOKEN, jwt);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(cookExpirationTime);
-        response.addCookie(cookie);
-        // 写入登录日志
+        cookie.setHttpOnly(true);  // 防止XSS攻击
+        cookie.setPath("/");       // 设置Cookie路径
+        cookie.setMaxAge(cookExpirationTime);  // 设置过期时间
+        response.addCookie(cookie);  // 添加到响应中
+        
+        // 10. 记录登录日志
         loginLogService.saveLoginLog(userEntity, request);
+        
+        // 11. 设置登录状态
         user.setLoginStatus(true);
-        // 重置登录次数
+        
+        // 12. 重置登录失败次数
         countLimitRepository.recordSuccess(user.getMail());
+        
+        // 13. 返回用户信息
         return user;
     }
 
@@ -650,7 +678,8 @@ public class UserServiceImpl extends ServiceImpl<UserDao, UserEntity> implements
         return this.getOne(new QueryWrapper<UserEntity>().eq("mail", email));
     }
 
-
+    // 常常查询手机号，最好对手机号加一个index
+    // mp 官方
     public UserEntity findUserByPhone(String phone) {
         return this.getOne(new QueryWrapper<UserEntity>().eq("phone", phone));
     }

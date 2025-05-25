@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * @create 2025-05-03
- */
+
 @RestController
 @RequestMapping("/api")
 public class AdvertisementController {

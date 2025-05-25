@@ -8,13 +8,7 @@ import com.buguagaoshu.tiktube.entity.UserRoleEntity;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * 
- *
- * @author Pu Zhiwei
- * @email puzhiweipuzhiwei@foxmail.com
- * @date 2020-09-05 15:03:54
- */
+
 public interface UserRoleService extends IService<UserRoleEntity> {
 
     PageUtils queryPage(Map<String, Object> params);

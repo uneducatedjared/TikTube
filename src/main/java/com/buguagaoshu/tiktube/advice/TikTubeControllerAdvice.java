@@ -6,25 +6,18 @@ import com.buguagaoshu.tiktube.exception.NeedToCheckEmailException;
 import com.buguagaoshu.tiktube.exception.UserNotFoundException;
 import com.buguagaoshu.tiktube.exception.VerifyFailedException;
 import com.buguagaoshu.tiktube.vo.ResponseDetails;
-
-
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * create          2020-09-05 15:31
- */
+
 @RestControllerAdvice(basePackages = {"com.buguagaoshu.tiktube.controller"})
 public class TikTubeControllerAdvice {
 
-
     @ExceptionHandler(value = {Exception.class})
     public ResponseDetails handleException(Exception e) {
-
         return ResponseDetails.ok(-1, e.getMessage());
     }
 

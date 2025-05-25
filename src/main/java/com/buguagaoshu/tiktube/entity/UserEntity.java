@@ -14,12 +14,8 @@ import lombok.Data;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-/**
- * @author Pu Zhiwei
- * @email puzhiweipuzhiwei@foxmail.com
- * @date 2020-09-05 14:38:43
- */
-@Data
+
+@Data //自动生成getter和setter 
 @TableName("user")
 public class UserEntity {
 

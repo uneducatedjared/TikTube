@@ -10,16 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * create          2019-08-13 13:29
- */
+
 @Component
 @Slf4j
 public class IpUtil {
     private final MyConfigProperties myConfigProperties;
 
-    private Searcher searcher;
+    private Searcher searcher; //初始化过所以可以直接用
 
 
     public IpUtil(MyConfigProperties myConfigProperties) {
@@ -59,7 +56,7 @@ public class IpUtil {
     public String getProxyIpAddr(HttpServletRequest request) {
         String ipAddress = null;
         try {
-            ipAddress = request.getHeader("x-forwarded-for");
+            ipAddress = request.getHeader("x-forwarded-for"); //获取客户端真实ip
             if (ipAddress == null || ipAddress.length() == 0 || "unknown".equalsIgnoreCase(ipAddress)) {
                 ipAddress = request.getHeader("Proxy-Client-IP");
             }

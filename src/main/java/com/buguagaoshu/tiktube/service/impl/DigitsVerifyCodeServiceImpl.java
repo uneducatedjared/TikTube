@@ -15,11 +15,6 @@ import java.security.SecureRandom;
 import java.util.Objects;
 
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * create          2019-11-26 17:07
- * 验证码服务
- */
 @Slf4j
 @Service
 public class DigitsVerifyCodeServiceImpl implements VerifyCodeService {

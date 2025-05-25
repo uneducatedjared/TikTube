@@ -5,10 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Objects;
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * @create 2025-04-23
- */
+
 @ConfigurationProperties(
         prefix = "tiktube"
 )

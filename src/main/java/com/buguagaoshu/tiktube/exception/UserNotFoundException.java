@@ -1,9 +1,5 @@
 package com.buguagaoshu.tiktube.exception;
 
-/**
- * @author Pu Zhiwei {@literal puzhiweipuzhiwei@foxmail.com}
- * create          2020-09-05 15:29
- */
 public class UserNotFoundException extends RuntimeException {
     public UserNotFoundException() {
         super();

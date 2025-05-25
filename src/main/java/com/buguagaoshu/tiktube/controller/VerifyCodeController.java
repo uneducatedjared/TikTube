@@ -62,7 +62,7 @@ public class VerifyCodeController {
     @GetMapping("/api/verifyImage")
     public HttpEntity image(HttpSession session) throws IOException {
         Image image = verifyCodeService.image(session.getId()); // 调对应的service生成图片
-        InputStreamResource inputStreamResource = imageToInputStreamResource(image, IMAGE_FORMAT);
+        InputStreamResource inputStreamResource = imageToInputStreamResource(image, IMAGE_FORMAT); //资源管理+封装inputStream
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Pragma", "No-cache");
         httpHeaders.set("Cache-Control", "no-cache");
@@ -75,6 +75,7 @@ public class VerifyCodeController {
 
     /**
      * 发送验证码
+     * 自动将请求转化成能用的方向
      */
     @PostMapping("/api/verify/send")
     public ResponseDetails send(@RequestBody UserEntity user, HttpServletRequest request) {
